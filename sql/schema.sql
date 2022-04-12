@@ -1,0 +1,10 @@
+DROP TABLE member if exists cascade;
+
+CREATE TABLE member (
+    member_id varchar(10),
+    money integer not null default 0,
+    primary key (member_id)
+);
+
+insert into member(member_id, money) values('hi1', 10000);
+insert into member(member_id, money) values('hi2', 20000);

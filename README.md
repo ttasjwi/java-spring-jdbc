@@ -138,3 +138,31 @@ java는 개발자들이 편리하게 데이터베이스에 접근할 수 있도�
 </details>
 
 ---
+
+## JDBC와 최신 데이터 접근 기술
+
+<details>
+<summary>접기/펼치기 버튼</summary>
+<div markdown="1">
+
+1. JDBC 직접 사용
+   - 애플리케이션 로직 - JDBC 인터페이스를 통해 SQL을 DB에 전달
+   - 
+2. SQL Mapper 사용
+   - 애플리케이션 로직 - SQL을 SQL Mapper에 전달(다양한 편의 제공) - JDBC를 통해 SQL을 DB에 전달
+   - 장점 : JDBC의 반복 코드 제거, SQL 응답 결과를 객체로 편리하게 변환
+   - 단점 : 개발자가 SQL을 직접 작성해야함...
+
+3. ORM 기술
+   - 애플리케이션 로직 - 객체를 JPA에 전달(JPA 구현체) - JDBC를 통해 SQL을 DB에 전달
+   - 객체를 RDBMS의 테이블과 매핑
+   - 단점 : 사전에 학습해야할 것이 매우 많음. (OOP, RDBMS)
+
+### 결론
+- 어떤 기술을 택하든 내부적으로 JDBC를 사용
+- JDBC를 직접 사용하지 않더라도 내부적으로 기본원리를 알아두어야 한다.
+
+</div>
+</details>
+
+---

@@ -166,3 +166,25 @@ java는 개발자들이 편리하게 데이터베이스에 접근할 수 있도�
 </details>
 
 ---
+
+## 데이터베이스 연결
+
+<details>
+<summary>접기/펼치기 버튼</summary>
+<div markdown="1">
+
+### 커넥션 획득(DriverManager)
+```java
+Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+```
+- 등록된 라이브러리 중 조건에 맞는 드라이버를 찾아 커넥션을 요청, DBMS에 커넥션을 연결
+
+### 커넥션(Connection)
+- JDBC 표준 인터페이스 : `java.sql.Connection`
+- 각 벤더별로 구현
+  - 예) H2 데이터베이스 : org.h2.jdbc.JdbcConnection
+
+</div>
+</details>
+
+---

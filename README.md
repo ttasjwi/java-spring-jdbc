@@ -188,3 +188,55 @@ Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 </details>
 
 ---
+
+## JDBC - insert
+
+<details>
+<summary>접기/펼치기 버튼</summary>
+<div markdown="1">
+
+```java
+
+    public Member save(Member member) throws SQLException {
+        String sql = "INSERT INTO MEMBER (member_id, money)\n" +
+                "values (?, ?)";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, member.getMemberId());
+            pstmt.setInt(2, member.getMoney());
+            pstmt.executeUpdate();
+            return member;
+        } catch (SQLException e) {
+            log.error("db error : {}", e);
+            throw e;
+        } finally {
+            close(conn, pstmt, null);
+        }
+    }
+```
+
+### SQL
+- 데이터베이스에 전달할 SQL
+  - Preparestatement로 넘길 때, 넘길 인자들은 `?`로 표현
+
+### PrepareStatement
+Statement의 하위 클래스. `?`를 통한 바인딩을 가능하게 한다. SQL Injection을 방지하기 위해서는 PrepareStatement를 써야함.
+- `con.prepareStatement(sql)` : DB에 전달할 SQL 및 파라미터로 전달할 데이터들을 준비
+  - `sql`
+  - `pstmt.setString(1, member.getMemberId())` : 첫번째 `?`에 값 지정  
+  - `pstmt.setInt(1, member.getMoney())` : 두번째 `?`에 값 지정.
+- `pstmt.executeUpdate()` : statement를 통해 준비된 SQL을 커넥션을 통해 실제 DB에 전달.
+  - executeUpdate는 실제 반영된 DB row 수를 반환
+
+### 리소스 정리
+- ResultSet 반환 -> Statement 반환 -> Connection 반환
+
+</div>
+</details>
+
+---

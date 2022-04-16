@@ -240,3 +240,59 @@ Statement의 하위 클래스. `?`를 통한 바인딩을 가능하게 한다. S
 </details>
 
 ---
+
+## JDBC - select
+
+<details>
+<summary>접기/펼치기 버튼</summary>
+<div markdown="1">
+
+```java
+    public Member findById(String memberId) throws SQLException {
+        String sql = "SELECT member_id, money\n" +
+                "FROM member\n" +
+                "WHERE member_id = ?";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, memberId);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return Member.builder()
+                        .memberId(rs.getString("member_id"))
+                        .money(rs.getInt("money"))
+                        .build();
+            } else {
+                throw new NoSuchElementException(
+                        String.format("Member Not Found : memberId= %s", memberId)
+                );
+            }
+        } catch (SQLException e) {
+            log.error("db error : {}", e);
+            throw e;
+        } finally {
+            close(conn, pstmt, rs);
+        }
+    }
+```
+- DB의 데이터를 조작하는 INSERT, DELETE, UPDATE문은 `executeUpdate()`를 호출
+- DB에서 데이터를 조회하는 SELECT문의 결과는 `pstmt.executeQuerey()` 메서드를 통해 얻어온다.
+  - 이 메서드의 반환 타입은 ResultSet이다.
+
+### ResultSet 
+![Result_Cursor.jpg](img/ResultSet_Cursor.jpg)
+- `rs.next()` : ResultSet의 커서를 다음으로 이동시키고 결과를 가져온 뒤, 결과가 존재하면 true, false를 반환
+    - ResultSet의 커서는 최초에 어떤 데이터도 가리키고 있지 않아서, 첫번째 결과부터 받아오려면 `rs.next()`로 커서를 옮겨야한다.
+- 결과가 단건이면 if문으로 감싸 처리하고, 여러건이면 while문으로 처리한다.
+
+</div>
+</details>
+
+---
+

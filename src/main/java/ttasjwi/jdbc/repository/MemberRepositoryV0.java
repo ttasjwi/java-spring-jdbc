@@ -5,6 +5,7 @@ import ttasjwi.jdbc.connection.DBConnectionUtil;
 import ttasjwi.jdbc.domain.Member;
 
 import java.sql.*;
+import java.util.NoSuchElementException;
 
 
 /**
@@ -33,6 +34,39 @@ public class MemberRepositoryV0 {
             throw e;
         } finally {
             close(conn, pstmt, null);
+        }
+    }
+
+    public Member findById(String memberId) throws SQLException {
+        String sql = "SELECT member_id, money\n" +
+                "FROM member\n" +
+                "WHERE member_id = ?";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, memberId);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return Member.builder()
+                        .memberId(rs.getString("member_id"))
+                        .money(rs.getInt("money"))
+                        .build();
+            } else {
+                throw new NoSuchElementException(
+                        String.format("Member Not Found : memberId= %s", memberId)
+                );
+            }
+        } catch (SQLException e) {
+            log.error("db error : {}", e);
+            throw e;
+        } finally {
+            close(conn, pstmt, rs);
         }
     }
 

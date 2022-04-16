@@ -320,3 +320,30 @@ Statement의 하위 클래스. `?`를 통한 바인딩을 가능하게 한다. S
 </details>
 
 ---
+
+## DataSource
+
+<details>
+<summary>접기/펼치기 버튼</summary>
+<div markdown="1">
+
+### 커넥션을 얻어오는 다양한 방법
+- DriveManager를 통해 커넥션을 얻어오기(매번 요청할 때마다 새로운 커넥션을 생성하여 반환)
+- DBCP2 커넥션풀(풀에서 조회), HikariCP 커넥션풀(풀에서 조회), ...
+
+### 커넥션을 얻어오는 방법을 추상화
+- 커넥션을 얻어오는 방법을 DataSource 계층에서 추상화
+  - DriveManager는 `DataSource`를 구현하지 않음. 대신 `DriveManagerDataSource`가 이를 구현하였다.
+- 실제 애플리케이션 로직에서는 DataSource 인터페이스를 통해 `getConnection()`을 얻어옴
+- 커넥션을 획득하는 역할을 담당하는 계층을 둠
+- 이제 애플리케이션 계층에서는 DataSource를 인터페이스에만 의존하면 됨. 실제 구현체(커넥션을 얻어오는 방법)가 달라져도 애플리케이션 로직은 변경하지 않아도 된다.
+
+### 설정과 사용의 분리
+- DataSource 구현체에서 설정정보를 가지고 있음.
+- 실제 커넥션을 얻어오는 애플리케이션 로직에서는 매번 설정 정보를 전달하지 않아도 됨. Repository 계층에서는 DataSource만 의존하고 설정정보를 몰라도 된다.
+- 객체를 설정하는 부분과, 사용하는 부분을 좀 더 명확하게 분리할 수 있음.
+
+</div>
+</details>
+
+---

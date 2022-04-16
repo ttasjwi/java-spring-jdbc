@@ -354,9 +354,18 @@ Statement의 하위 클래스. `?`를 통한 바인딩을 가능하게 한다. S
 <summary>접기/펼치기 버튼</summary>
 <div markdown="1">
 
+```java
+get Connection = HikariProxyConnection@1829217853 wrapping conn0: url=jdbc:h2:tcp://localhost/~/java-spring-jdbc user=SA, class=class com.zaxxer.hikari.pool.HikariProxyConnection
+get Connection = HikariProxyConnection@1461474945 wrapping conn0: url=jdbc:h2:tcp://localhost/~/java-spring-jdbc user=SA, class=class com.zaxxer.hikari.pool.HikariProxyConnection
+get Connection = HikariProxyConnection@1312963234 wrapping conn0: url=jdbc:h2:tcp://localhost/~/java-spring-jdbc user=SA, class=class com.zaxxer.hikari.pool.HikariProxyConnection
+```
+
 - DataSource의 구현체. 커넥션 풀에 커넥션을 채워둠.
 - 싱글스레드를 통해, 커넥션풀에서 커넥션을 생성하는 작업은 실행 속도에 영향을 줄 수 있음.
 - 별도의 스레드에서 커넥션을 생성하는 작업을 수행하도록 함.
+- 커넥션을 가져올 때 별도로 래핑해서 가져와서 메모리 주소가 다르게 보이긴 하지만, 실제로는 같은 커넥션을 사용하는 것을 알 수 있다.
+- 애플리케이션 로직에서 커넥션을 사용 후 다시 반환해서 재사용함을 알 수 있다.
+  - 커넥션에 대해 close메서드 호출 시 실제 커넥션을 종료하지 않고 커넥션풀에 반환하도록 구현되어 있다.
 
 </div>
 </details>

@@ -70,6 +70,50 @@ public class MemberRepositoryV0 {
         }
     }
 
+    public void update(String memberId, int money) throws SQLException {
+        String sql = "UPDATE member\n" +
+                "SET money = ?\n" +
+                "WHERE member_id = ?";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(2, memberId);
+            pstmt.setInt(1, money);
+            int resultSize = pstmt.executeUpdate();
+            log.info("resultSize = {}", resultSize);
+        } catch (SQLException e) {
+            log.error("db error : {}", e);
+            throw e;
+        } finally {
+            close(conn, pstmt, null);
+        }
+    }
+
+    public void delete(String memberId) throws SQLException {
+        String sql = "DELETE\n" +
+                "FROM member\n" +
+                "WHERE member_id = ?";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, memberId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            log.error("db error : {}", e);
+            throw e;
+        } finally {
+            close(conn, pstmt, null);
+        }
+    }
+
     private Connection getConnection() {
         return DBConnectionUtil.getConnection();
     }

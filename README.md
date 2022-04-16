@@ -189,7 +189,7 @@ Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 
 ---
 
-## JDBC - insert
+## JDBC - insert, update, delete
 
 <details>
 <summary>접기/펼치기 버튼</summary>
@@ -230,7 +230,8 @@ Statement의 하위 클래스. `?`를 통한 바인딩을 가능하게 한다. S
   - `sql`
   - `pstmt.setString(1, member.getMemberId())` : 첫번째 `?`에 값 지정  
   - `pstmt.setInt(1, member.getMoney())` : 두번째 `?`에 값 지정.
-- `pstmt.executeUpdate()` : statement를 통해 준비된 SQL을 커넥션을 통해 실제 DB에 전달.
+- `pstmt.executeUpdate()` : statement를 통해 준비된 SQL을 커넥션을 통해 실제 DB에 전달하여 데이터를 조작
+  - DB의 데이터를 조작하는 INSERT, DELETE, UPDATE문은 `executeUpdate()`를 호출
   - executeUpdate는 실제 반영된 DB row 수를 반환
 
 ### 리소스 정리
@@ -281,7 +282,6 @@ Statement의 하위 클래스. `?`를 통한 바인딩을 가능하게 한다. S
         }
     }
 ```
-- DB의 데이터를 조작하는 INSERT, DELETE, UPDATE문은 `executeUpdate()`를 호출
 - DB에서 데이터를 조회하는 SELECT문의 결과는 `pstmt.executeQuerey()` 메서드를 통해 얻어온다.
   - 이 메서드의 반환 타입은 ResultSet이다.
 

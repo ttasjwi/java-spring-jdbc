@@ -488,3 +488,30 @@ get Connection = HikariProxyConnection@1312963234 wrapping conn0: url=jdbc:h2:tc
 </details>
 
 ---
+
+## 트랜잭션 - DB 예제 2
+<details>
+<summary>접기/펼치기 버튼</summary>
+<div markdown="1">
+
+### AutoCommit true : 자동 커밋
+```sql
+set autocommit true;
+insert into member(member_id, money) values ('data1', 10000);
+insert into member(member_id, money) values ('data2', 10000);
+```
+- 매 순간마다 모든 명령이 커밋됨.
+### AutoCommit false : 수동커밋
+```sql
+set autocommit false;
+insert into member(member_id, money) values ('data3', 10000);
+insert into member(member_id, money) values ('data4', 10000);
+commit; // 수동 커밋
+```
+- 수동커밋모드 설정 : 트랜잭션 시작
+  - commit, rollback을 호출해야 트랜잭션이 종료됨
+  - 일정 시간 이상 명시적으로 트랜잭션을 종료하지 않으면 자동으로 롤백
+- 수동커밋모드, 자동커밋모드는 한번 설정하면 해당 세션에서는 계속 유지됨. (중간에 변경은 가능함)
+
+</div>
+</details>

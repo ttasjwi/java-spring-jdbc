@@ -579,3 +579,42 @@ SELECT * FROM member WHERE member_id='memberA' for update;
 </details>
 
 ---
+
+## 트랜잭션 - 적용1
+<details>
+<summary>접기/펼치기 버튼</summary>
+<div markdown="1">
+
+### 트랜잭션을 사용하지 않은 상황에서 예외 발생
+```java
+@RequiredArgsConstructor
+public class MemberServiceV1 {
+
+    private final MemberRepositoryV1 memberRepository;
+
+    public void accountTransfer(String fromId, String toId, int money) throws SQLException {
+        Member fromMember = memberRepository.findById(fromId);
+        Member toMember = memberRepository.findById(toId);
+
+        memberRepository.update(fromId, fromMember.getMoney()- money);
+
+        validation(toMember);
+
+        memberRepository.update(toId, toMember.getMoney() + money);
+    }
+
+    private void validation(Member toMember) {
+        if (toMember.getMemberId().equals("ex")) {
+            throw new IllegalStateException("이체 중 예외 발생");
+        }
+    }
+}
+```
+- 트랜잭션을 사용하지 않은 상황에서 예외가 발생할 경우 뒤의 로직이 수행되지 않음
+- A의 계좌에서 돈이 빠져나갔으나, B의 계좌에는 돈이 들어오지 않는 상황이 발생함
+- 원자성을 보장하기 위해서, 트랜잭션이 필요
+- 매번 테스트를 돌릴 때마다 데이터를 삭제하는 별도의 로직을 추가해야함
+  - 테스트가 끝날 때마다 롤백시키는 로직이 있다면 편할듯!
+
+</div>
+</details>

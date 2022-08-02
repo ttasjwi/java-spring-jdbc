@@ -40,8 +40,8 @@ public class MemberServiceV2 {
 
     private void businessLogic(Connection conn, String fromId, String toId, int money) throws SQLException {
         // 비즈니스 로직 수행
-        Member fromMember = memberRepository.findById(fromId);
-        Member toMember = memberRepository.findById(toId);
+        Member fromMember = memberRepository.findById(conn, fromId);
+        Member toMember = memberRepository.findById(conn, toId);
 
         memberRepository.update(conn, fromId, fromMember.getMoney()- money);
 

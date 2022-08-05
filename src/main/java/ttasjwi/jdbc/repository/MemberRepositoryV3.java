@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
  */
 
 @Slf4j
-public class MemberRepositoryV3 {
+public class MemberRepositoryV3 implements MemberRepositoryEx {
 
     private final DataSource dataSource;
 
@@ -26,6 +26,7 @@ public class MemberRepositoryV3 {
         this.dataSource = dataSource;
     }
 
+    @Override
     public Member save(Member member) throws SQLException {
         String sql = "INSERT INTO MEMBER (member_id, money)\n" +
                 "values (?, ?)";
@@ -48,6 +49,7 @@ public class MemberRepositoryV3 {
         }
     }
 
+    @Override
     public Member findById(String memberId) throws SQLException {
         String sql = "SELECT member_id, money\n" +
                 "FROM member\n" +
@@ -81,6 +83,7 @@ public class MemberRepositoryV3 {
         }
     }
 
+    @Override
     public void update(String memberId, int money) throws SQLException {
         String sql = "UPDATE member\n" +
                 "SET money = ?\n" +
@@ -104,6 +107,7 @@ public class MemberRepositoryV3 {
         }
     }
 
+    @Override
     public void delete(String memberId) throws SQLException {
         String sql = "DELETE\n" +
                 "FROM member\n" +

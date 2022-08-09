@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import ttasjwi.jdbc.domain.Member;
 import ttasjwi.jdbc.repository.MemberRepository;
 import ttasjwi.jdbc.repository.MemberRepositoryV4_1;
+import ttasjwi.jdbc.repository.MemberRepositoryV4_2;
 
 import javax.sql.DataSource;
 
@@ -21,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * 예외 누수 문제 해결
- * SQLException 제거
+ * SQLException 제거 -> SQLExceptionTranslator 추가로 예외를 스프링 예외로 추상화
  *
  * MemberRepository 인터페이스 의존
  *
@@ -47,7 +48,8 @@ class MemberServiceV4Test {
 
         @Bean
         MemberRepository memberRepository() {
-            return new MemberRepositoryV4_1(dataSource);
+            //return new MemberRepositoryV4_1(dataSource); // 단순 예외 변환
+            return new MemberRepositoryV4_2(dataSource); // 스프링 예외 변환
         }
 
         @Bean
